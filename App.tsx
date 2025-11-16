@@ -3,12 +3,7 @@ import Header from "./components/Header";
 import { OrderModal } from "./components/OrderModal";
 import { Order, Cake, GalleryCategory } from "./types";
 import { ROUND_CAKES, SQUARE_CAKES, GALLERY_ITEMS } from "./constants";
-import {
-  ArrowDownIcon,
-  CakeIcon,
-  InstagramIcon,
-  FacebookIcon,
-} from "./components/Icons";
+import { ArrowDownIcon, InstagramIcon, FacebookIcon } from "./components/Icons";
 
 const initialOrderState: Order = {
   isChristmasOrder: false,
@@ -76,7 +71,7 @@ const App: React.FC = () => {
     <div
       className="min-h-screen text-gray-800 font-sans"
       style={{
-        backgroundImage: "url('/images/main-background.jpg')",
+        backgroundImage: "url('/images/hero.png')",
         backgroundAttachment: "fixed",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -311,7 +306,7 @@ const App: React.FC = () => {
             </div>
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3686.960249586146!2d-44.5663786850424!3d-22.4682059852382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9d6df058cf3a6d%3A0x86337537af352c39!2sR.%20das%20Flores%2C%20123%20-%20Centro%2C%20Itatiaia%20-%20RJ%2C%2027580-000!5e0!3m2!1spt-BR!2sbr!4v1673024888781!5m2!1spt-BR!2sbr"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3713.3246222639563!2d-44.48763168500487!3d-22.420755785274736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94bdbabdc5f201%3A0x8e5f6c6e0e0f7e0!2sRua%2014%2C%20Jardim%20Itatiaia%2C%20Itatiaia%20-%20RJ%2C%2027580-000!5e0!3m2!1spt-BR!2sbr!4v1700846321234!5m2!1spt-BR!2sbr"
                 width="100%"
                 height="450"
                 style={{ border: 0 }}
@@ -322,7 +317,7 @@ const App: React.FC = () => {
               ></iframe>
               <div className="p-6 text-center">
                 <p className="text-lg font-medium text-gray-800">
-                  Rua das Flores, 123 - Centro
+                  Rua 14, nº 34 - Jardim Itatiaia
                 </p>
                 <p className="text-gray-600">Itatiaia - RJ, 27580-000</p>
               </div>
@@ -334,11 +329,15 @@ const App: React.FC = () => {
       <footer className="bg-purple-800 text-white py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex justify-center items-center mb-4">
-            <CakeIcon className="h-7 w-7" />
+            <img
+              src="/cake01.png"
+              alt="Logo Cantinho do Doce"
+              className="h-8 w-auto"
+            />
             <span className="ml-2 text-xl font-bold">Cantinho do Doce</span>
           </div>
           <div className="flex justify-center space-x-6 mb-4">
-            <a href="https://www.instagram.com/cakecantinho/" className="hover:text-pink-300 transition-colors">
+            <a href="#" className="hover:text-pink-300 transition-colors">
               <InstagramIcon className="w-6 h-6" />
             </a>
             <a href="#" className="hover:text-pink-300 transition-colors">

@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { CakeIcon, MenuIcon, CloseIcon } from './Icons';
+import React, { useState } from "react";
+import { MenuIcon, CloseIcon } from "./Icons";
 
 interface HeaderProps {
   onChristmasOrder: () => void;
@@ -10,23 +9,33 @@ const Header: React.FC<HeaderProps> = ({ onChristmasOrder }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Nossos Bolos', href: '#bolos' },
-    { name: 'Galeria', href: '#galeria' },
-    { name: 'Informações', href: '#informacoes' },
-    { name: 'Contato', href: '#contato' },
+    { name: "Nossos Bolos", href: "#bolos" },
+    { name: "Galeria", href: "#galeria" },
+    { name: "Informações", href: "#informacoes" },
+    { name: "Contato", href: "#contato" },
   ];
 
   return (
     <header className="bg-purple-50/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <div className="flex items-center">
-            <CakeIcon className="h-8 w-8 text-purple-600" />
-            <span className="ml-3 text-2xl font-bold text-purple-800 tracking-tight">Cantinho do Doce</span>
-          </div>
+          <a href="#" className="flex items-center">
+            <img
+              src="/cake.png"
+              alt="Logo Cantinho do Doce"
+              className="h-10 w-auto"
+            />
+            <span className="ml-2 text-2xl font-bold text-purple-800 tracking-tight">
+              Cantinho do Doce
+            </span>
+          </a>
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className="text-gray-600 hover:text-purple-600 font-medium transition-colors">
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-gray-600 hover:text-purple-600 font-medium transition-colors"
+              >
                 {link.name}
               </a>
             ))}
@@ -39,8 +48,15 @@ const Header: React.FC<HeaderProps> = ({ onChristmasOrder }) => {
               Encomenda de Natal
             </button>
             <div className="md:hidden ml-4">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-md text-gray-600 hover:text-purple-600 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
-                {isMenuOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 rounded-md text-gray-600 hover:text-purple-600 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
+              >
+                {isMenuOpen ? (
+                  <CloseIcon className="h-6 w-6" />
+                ) : (
+                  <MenuIcon className="h-6 w-6" />
+                )}
               </button>
             </div>
           </div>
