@@ -2,18 +2,49 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="bolo.png" href="/cake.png" />
+    <link rel="icon" type="image/png" href="/public/images/cake.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cantinho do Doce - Janaína Mendes</title>
+    <meta
+      name="description"
+      content="Cantinho do Doce - Bolos artesanais feitos com amor por Janaína Mendes. Encomende seu bolo personalizado para eventos especiais."
+    />
+    <meta
+      name="keywords"
+      content="bolos, doce, confeitaria, encomendas, aniversário, casamento, Itatiaia"
+    />
+    <meta name="author" content="Janaína Mendes" />
+    <title>Cantinho do Doce</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              purple: {
+                50: "#faf5ff",
+                100: "#f3e8ff",
+                500: "#a855f7",
+                600: "#9333ea",
+                700: "#7c3aed",
+                800: "#6b21a8",
+              },
+              pink: {
+                300: "#f9a8d4",
+                400: "#f472b6",
+                500: "#ec4899",
+                600: "#db2777",
+                700: "#be185d",
+              },
+            },
+          },
+        },
+      };
+    </script>
     <style>
-      /* Smooth scrolling and offset for sticky header */
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: 80px; /* h-20 header height */
+        scroll-padding-top: 80px;
       }
-
-      /* Custom scrollbar for a more delicate look */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -21,25 +52,100 @@
         background: #f1e9f5;
       }
       ::-webkit-scrollbar-thumb {
-        background: #c084fc;
+        background: linear-gradient(to bottom, #a855f7, #ec4899);
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: lab(53.53% 62.67 -67.98);
+        background: linear-gradient(to bottom, #9333ea, #db2777);
       }
-    </style>
-    <script type="importmap">
-      {
-        "imports": {
-          "react/": "https://aistudiocdn.com/react@^19.2.0/",
-          "react": "https://aistudiocdn.com/react@^19.2.0",
-          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+
+      /* Loading animation */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
-    </script>
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      /* Custom button styles */
+      .btn-primary {
+        background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+      }
+
+      /* Animações personalizadas */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .animation-delay-300 {
+        animation-delay: 300ms;
+      }
+
+      .animation-delay-500 {
+        animation-delay: 500ms;
+      }
+
+      .animation-delay-1000 {
+        animation-delay: 1000ms;
+      }
+
+      /* Garantir que as animações funcionem */
+      .animate-fade-in-up {
+        opacity: 0;
+      }
+
+      /* Melhorar sombras */
+      .drop-shadow-2xl {
+        filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
+      }
+
+      .shadow-3xl {
+        box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+      }
+    </style>
   </head>
-  <body>
+  <body class="antialiased">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
