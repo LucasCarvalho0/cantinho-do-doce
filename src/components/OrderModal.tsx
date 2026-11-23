@@ -32,6 +32,8 @@ interface OrderModalProps {
     pickupDate: string;
     whatsappMessage: string;
     isChristmas: boolean;
+    topperImagePreview?: string;
+    topperImageName?: string;
   }) => void;
 }
 
@@ -198,6 +200,8 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         pickupDate: order.customer.pickupDate,
         whatsappMessage: message,
         isChristmas: order.isChristmasOrder,
+        topperImagePreview: order.customer.topperImagePreview,
+        topperImageName: order.customer.topperImageName,
       });
     } catch (err: any) {
       setSubmitError(
@@ -411,14 +415,27 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
           {/* STEP 3: FILLINGS */}
           {currentStep === 3 && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-500">
-                  Escolha até <strong>2 recheios</strong> para compor o sabor do seu bolo:
-                </p>
-                <span className="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">
-                  {order.fillings.length}/2 selecionados
-                </span>
+            <div className="space-y-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-[#F5F3FF] p-3 sm:p-3.5 rounded-2xl border border-[#DDD6FE]">
+                <div>
+                  <h4 className="text-xs sm:text-sm font-bold text-[#1C1C2E]">
+                    Recheios Artesanais
+                  </h4>
+                  <p className="text-xs text-[#6B7280] mt-0.5">
+                    Escolha <strong>1 ou 2 recheios</strong> para compor o sabor:
+                  </p>
+                </div>
+                <div className="flex-shrink-0 self-start sm:self-auto">
+                  <span
+                    className={`inline-flex items-center text-xs font-extrabold px-3 py-1 rounded-full whitespace-nowrap shadow-xs transition-colors ${
+                      order.fillings.length > 0
+                        ? "bg-[#8B5CF6] text-white"
+                        : "bg-white text-[#7C3AED] border border-[#DDD6FE]"
+                    }`}
+                  >
+                    {order.fillings.length} de 2 selecionados
+                  </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -565,10 +582,16 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Data Desejada de Retirada *
-                  </label>
+                <div className="bg-[#FAF5FF] p-3 sm:p-3.5 rounded-2xl border-2 border-[#8B5CF6]/50 hover:border-[#8B5CF6] transition-all shadow-xs">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-extrabold text-[#5B21B6] flex items-center space-x-1.5 cursor-pointer">
+                      <span>📅</span>
+                      <span>Data Desejada de Retirada *</span>
+                    </label>
+                    <span className="text-[10px] font-bold text-[#7C3AED] bg-[#EDE9FE] px-2 py-0.5 rounded-full border border-[#DDD6FE]">
+                      Obrigatório
+                    </span>
+                  </div>
                   <input
                     type="date"
                     required
@@ -583,8 +606,26 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                         },
                       })
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-200 outline-none text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border-2 border-[#8B5CF6] focus:border-[#7C3AED] focus:ring-2 focus:ring-[#8B5CF6]/30 outline-none text-sm font-bold text-[#1C1C2E] bg-white cursor-pointer shadow-2xs"
                   />
+                  <p className="text-[11px] text-[#7C3AED] mt-1.5 font-medium flex items-center space-x-1">
+                    <span>👉</span>
+                    <span>Toque no campo para escolher o dia da retirada (a partir de amanhã)</span>
+                  </p>
+                  {order.customer.pickupDate && (
+                    <div className="mt-2 py-1 px-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-[11px] font-bold flex items-center space-x-1">
+                      <span>✓</span>
+                      <span>
+                        Retirada agendada para:{" "}
+                        {new Date(order.customer.pickupDate + "T12:00:00").toLocaleDateString("pt-BR", {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -186,7 +186,9 @@ export const generateWhatsAppMessage = (
       msg += `  ↳ *Detalhes do Topo:* ${order.customer.topperNotes}\n`;
     }
     if (order.customer.topperImageName) {
-      msg += `  ↳ *Foto de Inspiração do Topo:* Anexada (${order.customer.topperImageName}) 📸\n`;
+      msg += `  ↳ *Foto de Inspiração do Topo:* ${order.customer.topperImageName} (enviando em anexo nesta conversa) 📸\n`;
+    } else {
+      msg += `  ↳ *Foto de Inspiração do Topo:* (enviando foto de referência em anexo) 📸\n`;
     }
   }
   if (order?.customer?.themeDescription) {

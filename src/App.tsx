@@ -54,6 +54,8 @@ export const AppContent: React.FC = () => {
     pickupDate: string;
     whatsappMessage: string;
     isChristmas: boolean;
+    topperImagePreview?: string;
+    topperImageName?: string;
   } | null>(null);
 
   const { totalItems, setIsCartOpen } = useCart();
@@ -91,16 +93,33 @@ export const AppContent: React.FC = () => {
     setSelectedProduct(null);
   };
 
+  const scrollToTarget = (id: string, category?: ProductCategory | "todos") => {
+    if (category !== undefined) {
+      setActiveCategory(category);
+    }
+    // Allow state and DOM layout changes to settle before measuring offset
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          const headerOffset = 75;
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: "smooth",
+          });
+        }
+      }, 70);
+    });
+  };
+
   const scrollToCatalog = () => {
-    setActiveCategory("todos");
-    const el = document.getElementById("catalogo");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToTarget("catalogo", "todos");
   };
 
   const scrollToChristmas = () => {
-    setActiveCategory("natal-anonovo");
-    const el = document.getElementById("natal-especial");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToTarget("natal-especial", "natal-anonovo");
   };
 
   const scrollToTop = () => {
@@ -135,7 +154,13 @@ export const AppContent: React.FC = () => {
         <div id="categorias">
           <CategoryChips
             activeCategory={activeCategory}
-            onSelectCategory={setActiveCategory}
+            onSelectCategory={(cat) => {
+              if (cat === "natal-anonovo") {
+                scrollToChristmas();
+              } else {
+                scrollToTarget("catalogo", cat);
+              }
+            }}
             counts={categoryCounts}
           />
         </div>
@@ -255,6 +280,8 @@ export const AppContent: React.FC = () => {
           whatsappMessage={submittedOrder.whatsappMessage}
           whatsappNumber={WHATSAPP_NUMBER}
           isChristmas={submittedOrder.isChristmas}
+          topperImagePreview={submittedOrder.topperImagePreview}
+          topperImageName={submittedOrder.topperImageName}
           onClose={() => setSubmittedOrder(null)}
         />
       )}
