@@ -93,18 +93,28 @@ export const ReviewsSection: React.FC = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Monitor scroll position to update arrows and active dot
+  // Monitor scroll position to update arrows and active dot accurately
   const handleScroll = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    setCanScrollLeft(el.scrollLeft > 20);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 20);
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
 
-    const cardWidth = el.clientWidth * 0.85;
-    if (cardWidth > 0) {
-      const newIndex = Math.round(el.scrollLeft / cardWidth);
-      setActiveIndex(Math.min(Math.max(newIndex, 0), REVIEWS.length - 1));
+    const children = Array.from(el.children) as HTMLElement[];
+    if (children.length > 0) {
+      const scrollCenter = el.scrollLeft + el.clientWidth / 2;
+      let closestIdx = 0;
+      let minDiff = Infinity;
+      children.forEach((child, idx) => {
+        const childCenter = child.offsetLeft + child.offsetWidth / 2;
+        const diff = Math.abs(scrollCenter - childCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+      setActiveIndex(closestIdx);
     }
   };
 
@@ -116,7 +126,8 @@ export const ReviewsSection: React.FC = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const scrollAmount = Math.min(el.clientWidth * 0.85, 380);
+    const card = el.firstElementChild as HTMLElement;
+    const scrollAmount = card ? card.offsetWidth + 16 : el.clientWidth;
     el.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
@@ -127,19 +138,22 @@ export const ReviewsSection: React.FC = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const cardWidth = Math.min(el.clientWidth * 0.85, 380);
-    el.scrollTo({
-      left: index * cardWidth,
-      behavior: "smooth",
-    });
-    setActiveIndex(index);
+    const children = Array.from(el.children) as HTMLElement[];
+    if (children[index]) {
+      children[index].scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+      setActiveIndex(index);
+    }
   };
 
   return (
     <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14" id="avaliacoes">
-      <div className="bg-white rounded-3xl p-5 sm:p-10 border border-[#DDD6FE] shadow-xs">
+      <div className="bg-white rounded-3xl p-4 sm:p-8 md:p-10 border border-[#DDD6FE] shadow-xs">
         {/* Header Section */}
-        <div className="text-center max-w-xl mx-auto mb-8">
+        <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
           <div className="inline-flex items-center space-x-1.5 text-xs font-bold text-[#8B5CF6] uppercase tracking-wider mb-1.5">
             <span>⭐ Depoimentos Reais de Clientes</span>
           </div>
@@ -200,7 +214,7 @@ export const ReviewsSection: React.FC = () => {
             tabIndex={0}
             role="region"
             aria-label="Carrossel de avaliações de clientes"
-            className="flex space-x-3.5 sm:space-x-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-2 px-1 scrollbar-none focus:outline-none"
+            className="flex space-x-3.5 sm:space-x-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-2 px-0.5 scrollbar-none focus:outline-none"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
@@ -210,7 +224,7 @@ export const ReviewsSection: React.FC = () => {
             {REVIEWS.map((rev) => (
               <div
                 key={rev.id}
-                className="w-[86vw] max-w-[340px] sm:w-[350px] md:w-[370px] flex-shrink-0 snap-center p-4 sm:p-6 rounded-3xl bg-[#F8F7FB] border border-[#DDD6FE] shadow-xs flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:border-[#8B5CF6]/50"
+                className="w-full sm:w-[350px] md:w-[370px] flex-shrink-0 snap-center p-4 sm:p-6 rounded-3xl bg-[#F8F7FB] border border-[#DDD6FE] shadow-xs flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:border-[#8B5CF6]/50"
               >
                 <div>
                   {/* Customer Profile Header */}
@@ -248,7 +262,7 @@ export const ReviewsSection: React.FC = () => {
 
                     {/* Customer Full Name & Details */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1.5">
+                      <div className="flex items-center justify-between gap-1.5 flex-wrap">
                         <h3 className="text-sm sm:text-base font-bold text-[#1C1C2E] leading-tight">
                           {rev.name}
                         </h3>
@@ -256,14 +270,14 @@ export const ReviewsSection: React.FC = () => {
                           Verificada
                         </span>
                       </div>
-                      <p className="text-xs text-[#7C6FAD] mt-1 font-normal truncate">
+                      <p className="text-xs text-[#7C6FAD] mt-1 font-normal">
                         {rev.role} • {rev.location}
                       </p>
                     </div>
                   </div>
 
                   {/* Rating Stars + Cake Tag */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                     <div className="flex text-amber-500 text-xs tracking-wider">
                       {"★".repeat(rev.stars)}
                     </div>
@@ -289,15 +303,43 @@ export const ReviewsSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Swipe indicator hint for mobile */}
-          <div className="md:hidden text-center mt-3.5 text-xs text-[#7C6FAD] flex items-center justify-center space-x-1.5">
-            <span>👈</span>
-            <span className="font-semibold">Deslize para ver todas as avaliações</span>
-            <span>👉</span>
+          {/* Mobile Navigation Controls: Prev, Current/Total, Next */}
+          <div className="flex items-center justify-between mt-4 md:hidden px-1">
+            <button
+              type="button"
+              onClick={() => scrollTo("left")}
+              disabled={!canScrollLeft}
+              aria-label="Avaliação anterior"
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+                canScrollLeft
+                  ? "bg-[#F5F3FF] border-[#8B5CF6] text-[#7C3AED] active:bg-[#8B5CF6] active:text-white"
+                  : "opacity-40 border-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              <span>‹ Anterior</span>
+            </button>
+
+            <span className="text-xs font-semibold text-[#7C6FAD]">
+              {activeIndex + 1} de {REVIEWS.length}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => scrollTo("right")}
+              disabled={!canScrollRight}
+              aria-label="Próxima avaliação"
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all ${
+                canScrollRight
+                  ? "bg-[#F5F3FF] border-[#8B5CF6] text-[#7C3AED] active:bg-[#8B5CF6] active:text-white"
+                  : "opacity-40 border-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              <span>Próxima ›</span>
+            </button>
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex items-center justify-center space-x-2 mt-4 sm:mt-6">
+          <div className="flex items-center justify-center space-x-2 mt-3 sm:mt-6">
             {REVIEWS.map((rev, idx) => (
               <button
                 key={rev.id}
@@ -311,6 +353,13 @@ export const ReviewsSection: React.FC = () => {
                 }`}
               />
             ))}
+          </div>
+
+          {/* Swipe indicator hint for mobile */}
+          <div className="md:hidden text-center mt-2.5 text-[11px] text-[#7C6FAD] flex items-center justify-center space-x-1.5">
+            <span>👈</span>
+            <span>Você também pode arrastar para o lado</span>
+            <span>👉</span>
           </div>
         </div>
       </div>
