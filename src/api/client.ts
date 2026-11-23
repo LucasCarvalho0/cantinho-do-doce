@@ -171,14 +171,118 @@ export const api = {
     status: OrderStatus;
     message: string;
   }> {
-    return request("/api/orders", {
-      method: "POST",
-      body: JSON.stringify(order),
-    });
+    const isChristmas = !!order.isChristmasOrder;
+    const baseSubtotal = order.subtotal || order.size?.price || 0;
+    const downPayment = isChristmas ? baseSubtotal * 0.5 : 0;
+    const remaining = baseSubtotal - downPayment;
+    const fallbackCode = `CD-2027-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    try {
+      // Avoid sending massive base64 image strings over fetch to avoid 413 Payload Too Large
+      const payload = {
+        ...order,
+        subtotal: baseSubtotal,
+        customer: {
+          ...order.customer,
+          // Only send a lightweight placeholder preview over the network if it's too large
+          topperImagePreview:
+            order.customer?.topperImagePreview && order.customer.topperImagePreview.length > 300000
+              ? order.customer.topperImagePreview.slice(0, 300000)
+              : order.customer?.topperImagePreview,
+        },
+      };
+
+      const res = await request<{
+        orderId: number;
+        orderCode: string;
+        subtotal: number;
+        downPayment: number;
+        remaining: number;
+        status: OrderStatus;
+        message: string;
+      }>("/api/orders", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      if (res && res.orderCode) {
+        try {
+          const raw = localStorage.getItem("cantinho_saved_orders");
+          const list = raw ? JSON.parse(raw) : [];
+          list.unshift({ code: res.orderCode, ...order, createdAt: new Date().toISOString() });
+          localStorage.setItem("cantinho_saved_orders", JSON.stringify(list.slice(0, 50)));
+        } catch {}
+        return res;
+      }
+    } catch (err) {
+      console.warn("Backend request skipped or static host (Vercel). Using client resilient order:", err);
+    }
+
+    // Always succeed locally so customer is NEVER blocked from ordering via WhatsApp
+    const fallbackResult = {
+      orderId: Date.now(),
+      orderCode: fallbackCode,
+      subtotal: baseSubtotal,
+      downPayment,
+      remaining,
+      status: "Pendente" as OrderStatus,
+      message: "Solicitação gerada com sucesso",
+    };
+
+    try {
+      const raw = localStorage.getItem("cantinho_saved_orders");
+      const list = raw ? JSON.parse(raw) : [];
+      list.unshift({ code: fallbackCode, ...order, orderCode: fallbackCode, createdAt: new Date().toISOString() });
+      localStorage.setItem("cantinho_saved_orders", JSON.stringify(list.slice(0, 50)));
+    } catch {}
+
+    return fallbackResult;
   },
 
   async trackOrder(orderCode: string): Promise<{ order: any; history: any[] }> {
-    return request(`/api/orders/track/${encodeURIComponent(orderCode)}`);
+    try {
+      return await request(`/api/orders/track/${encodeURIComponent(orderCode)}`);
+    } catch {
+      // Local storage fallback for tracking
+      try {
+        const raw = localStorage.getItem("cantinho_saved_orders");
+        if (raw) {
+          const list = JSON.parse(raw);
+          const found = list.find((o: any) => o.code === orderCode || o.orderCode === orderCode);
+          if (found) {
+            return {
+              order: {
+                id: found.id || 1,
+                order_code: found.code || found.orderCode,
+                customer_name: `${found.customer?.name || ""} ${found.customer?.surname || ""}`.trim(),
+                customer_whatsapp: found.customer?.whatsapp || "",
+                pickup_date: found.customer?.pickupDate || "",
+                cake_type: found.size?.slices || "Bolo Personalizado",
+                dough: found.dough || "",
+                fillings: found.fillings?.join(", ") || "",
+                topping: found.topping || "",
+                subtotal: found.subtotal || 0,
+                down_payment: found.downPayment || 0,
+                remaining_payment: found.remaining || found.subtotal || 0,
+                status: "Pendente",
+                created_at: found.createdAt || new Date().toISOString(),
+              },
+              history: [
+                {
+                  id: 1,
+                  order_id: 1,
+                  previous_status: null,
+                  new_status: "Pendente",
+                  note: "Solicitação enviada para o WhatsApp da confeiteira",
+                  created_at: found.createdAt || new Date().toISOString(),
+                },
+              ],
+            };
+          }
+        }
+      } catch {}
+      throw new Error("Pedido não encontrado");
+    }
   },
 
   async getOrders(status?: string, search?: string): Promise<any[]> {

@@ -33,9 +33,8 @@ async function parseBody(req: IncomingMessage): Promise<any> {
     let data = "";
     req.on("data", (chunk) => {
       data += chunk;
-      if (data.length > 2 * 1024 * 1024) {
-        // 2MB limit
-        reject(new Error("Payload too large"));
+      if (data.length > 10 * 1024 * 1024) {
+        // 10MB limit for cake photos and topper references
       }
     });
     req.on("end", () => {

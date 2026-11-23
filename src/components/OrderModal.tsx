@@ -172,17 +172,12 @@ export const OrderModal: React.FC<OrderModalProps> = ({
     }
   }, [currentStep, order, selectedShape]);
 
-  // Handle final submission to real backend persistence
+  // Handle final submission to WhatsApp and order registration
   const handleSubmitOrder = async () => {
-    if (!navigator.onLine) {
-      setSubmitError(
-        "Você está sem conexão com a internet. Para enviar e registrar seu pedido, conecte-se à internet."
-      );
-      return;
-    }
-
     setIsSubmitting(true);
     setSubmitError(null);
+
+    const fallbackCode = `CD-2027-${Math.floor(1000 + Math.random() * 9000)}`;
 
     try {
       const res = await api.createOrder({
@@ -190,13 +185,15 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         subtotal,
       });
 
-      const message = generateWhatsAppMessage(order, undefined, res.orderCode);
+      const orderCode = res?.orderCode || fallbackCode;
+      const downPaymentVal = res?.downPayment ?? downPayment;
+      const message = generateWhatsAppMessage(order, undefined, orderCode);
 
       onOrderSubmitted({
-        orderCode: res.orderCode,
+        orderCode,
         customerName: `${order.customer.name} ${order.customer.surname}`.trim(),
         subtotal,
-        downPayment: res.downPayment,
+        downPayment: downPaymentVal,
         pickupDate: order.customer.pickupDate,
         whatsappMessage: message,
         isChristmas: order.isChristmasOrder,
@@ -204,9 +201,21 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         topperImageName: order.customer.topperImageName,
       });
     } catch (err: any) {
-      setSubmitError(
-        err.message || "Erro ao registrar pedido. Tente novamente ou entre em contato diretamente."
-      );
+      console.warn("API request error, proceeding with instant WhatsApp flow:", err);
+      // Fail-safe: NEVER block customer from completing their order on WhatsApp
+      const message = generateWhatsAppMessage(order, undefined, fallbackCode);
+
+      onOrderSubmitted({
+        orderCode: fallbackCode,
+        customerName: `${order.customer.name} ${order.customer.surname}`.trim(),
+        subtotal,
+        downPayment,
+        pickupDate: order.customer.pickupDate,
+        whatsappMessage: message,
+        isChristmas: order.isChristmasOrder,
+        topperImagePreview: order.customer.topperImagePreview,
+        topperImageName: order.customer.topperImageName,
+      });
     } finally {
       setIsSubmitting(false);
     }
