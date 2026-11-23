@@ -1,150 +1,158 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/public/images/cake.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Cantinho Doce | Delivery & Encomendas de Bolos — Janaína Mendes</title>
+    <meta name="title" content="Cantinho Doce | Delivery & Encomendas de Bolos — Janaína Mendes" />
     <meta
       name="description"
-      content="Cantinho do Doce - Bolos artesanais feitos com amor por Janaína Mendes. Encomende seu bolo personalizado para eventos especiais."
+      content="Encomende bolos artesanais para aniversários, casamentos e festas com Janaína Mendes em Itatiaia - RJ. Escolha o tamanho, personalize sabores e envie seu pedido pelo WhatsApp."
     />
     <meta
       name="keywords"
-      content="bolos, doce, confeitaria, encomendas, aniversário, casamento, Itatiaia"
+      content="bolos artesanais, delivery de bolos, confeitaria Itatiaia, Janaína Mendes, bolo de aniversário, bolo personalizado, Cantinho Doce"
     />
-    <meta name="author" content="Janaína Mendes" />
-    <title>Cantinho do Doce</title>
+    <meta name="author" content="Janaína Mendes - Cantinho Doce" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#8B5CF6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Cantinho Doce" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cantinho Doce | Bolos Artesanais por Janaína Mendes" />
+    <meta
+      property="og:description"
+      content="Cardápio digital de bolos artesanais com fotos reais, tamanhos e valores. Monte seu pedido e envie direto para o WhatsApp da confeiteira."
+    />
+    <meta property="og:image" content="/images/hero01.jpg" />
+
+    <!-- Fonts: Google Roboto, Playfair Display & Dancing Script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Space+Grotesk:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
+            fontFamily: {
+              sans: ["'Roboto'", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+              serif: ["'Playfair Display'", "Georgia", "serif"],
+              script: ["'Dancing Script'", "'Great Vibes'", "cursive"],
+            },
             colors: {
-              purple: {
-                50: "#faf5ff",
-                100: "#f3e8ff",
-                500: "#a855f7",
-                600: "#9333ea",
-                700: "#7c3aed",
-                800: "#6b21a8",
+              lilac: {
+                50: "#F5F3FF",
+                100: "#EDE9FE",
+                200: "#DDD6FE",
+                300: "#C4B5FD",
+                400: "#A78BFA",
+                500: "#8B5CF6",
+                600: "#7C3AED",
+                700: "#6D28D9",
+                800: "#5B21B6",
+                900: "#4C1D95",
               },
-              pink: {
-                300: "#f9a8d4",
-                400: "#f472b6",
-                500: "#ec4899",
-                600: "#db2777",
-                700: "#be185d",
+              ink: {
+                800: "#2D2B55",
+                900: "#1C1C2E",
               },
             },
           },
         },
       };
     </script>
+
     <style>
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 80px;
+      * { box-sizing: border-box; }
+      html, body { overflow-x: hidden; }
+      body {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #FAF8F5;
+        color: #1C1C2E;
+      }
+      /* iOS safe-area support */
+      .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
       }
       ::-webkit-scrollbar {
         width: 8px;
+        height: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1e9f5;
+        background: #FAF7F2;
       }
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #a855f7, #ec4899);
-        border-radius: 10px;
+        background: #D6CCC2;
+        border-radius: 9999px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(to bottom, #9333ea, #db2777);
+        background: #9C8B82;
+      }
+      .scrollbar-none::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-none {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
 
-      /* Loading animation */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
+      /* Marquee / ticker animation for hero badge */
+      @keyframes marquee-slide {
+        0%   { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+      .animate-marquee {
+        display: inline-block;
+        white-space: nowrap;
+        animation: marquee-slide 5s linear infinite;
+      }
+
+      /* Call To Action Vibrant "Alive" Button Animation */
+      @keyframes cta-vibrate {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+          box-shadow: 0 10px 25px -3px rgba(139, 92, 246, 0.4), 0 4px 6px -2px rgba(139, 92, 246, 0.2);
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .animate-fade-in-up {
-        animation: fadeInUp 0.6s ease-out;
-      }
-
-      /* Custom button styles */
-      .btn-primary {
-        background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
-      }
-
-      /* Animações personalizadas */
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
+        25% {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 16px 30px -3px rgba(139, 92, 246, 0.65), 0 6px 12px -2px rgba(236, 72, 153, 0.4);
         }
         50% {
-          transform: translateY(-10px);
+          transform: translateY(1px) scale(1.01);
+          box-shadow: 0 12px 24px -3px rgba(124, 58, 237, 0.5), 0 4px 8px -2px rgba(139, 92, 246, 0.25);
+        }
+        75% {
+          transform: translateY(-1px) scale(1.03);
+          box-shadow: 0 18px 34px -3px rgba(236, 72, 153, 0.6), 0 8px 14px -2px rgba(139, 92, 246, 0.45);
         }
       }
-
-      .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-      }
-
-      .animate-float {
-        animation: float 3s ease-in-out infinite;
-      }
-
-      .animation-delay-300 {
-        animation-delay: 300ms;
-      }
-
-      .animation-delay-500 {
-        animation-delay: 500ms;
-      }
-
-      .animation-delay-1000 {
-        animation-delay: 1000ms;
-      }
-
-      /* Garantir que as animações funcionem */
-      .animate-fade-in-up {
-        opacity: 0;
-      }
-
-      /* Melhorar sombras */
-      .drop-shadow-2xl {
-        filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));
-      }
-
-      .shadow-3xl {
-        box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+      .animate-cta-alive {
+        animation: cta-vibrate 1.2s ease-in-out infinite;
       }
     </style>
   </head>
-  <body class="antialiased">
+  <body class="antialiased selection:bg-[#F3C5CE] selection:text-[#2D1B18]">
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>
