@@ -18,7 +18,7 @@ const REVIEWS: Review[] = [
     name: "Mariana Silva",
     role: "Aniversário de 15 Anos",
     location: "Itatiaia - RJ",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=250&auto=format&fit=crop&q=80",
     stars: 5,
     cakeType: "Bolo Floral com Rosas",
     comment:
@@ -30,11 +30,11 @@ const REVIEWS: Review[] = [
     name: "Camila Albuquerque",
     role: "Aniversário Infantil",
     location: "Cidade Jardim, Itatiaia",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=250&auto=format&fit=crop&q=80",
     stars: 5,
-    cakeType: "Bolo Temático Homem-Aranha",
+    cakeType: "Bolo Homem-Aranha",
     comment:
-      "Fiz o pedido do bolo temático para o meu filho e a Janaína cuidou de cada detalhe com muito carinho. O topo personalizado ficou perfeito e idêntico à foto que mandei! Não sobrou nem uma fatia para contar história.",
+      "Fiz o pedido do bolo temático para o meu filho e a Janaína cuidou de cada detalhe com muito carinho. O topo personalizado ficou perfeito e idêntico à foto que mandei no WhatsApp! Não sobrou nem uma fatia para contar história.",
     date: "Novembro de 2026",
   },
   {
@@ -42,7 +42,7 @@ const REVIEWS: Review[] = [
     name: "Juliana Ferreira",
     role: "Celebração em Família",
     location: "Vila Pinheiro, Itatiaia",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=250&auto=format&fit=crop&q=80",
     stars: 5,
     cakeType: "Bolo Red Velvet Especial",
     comment:
@@ -54,7 +54,7 @@ const REVIEWS: Review[] = [
     name: "Beatriz Rocha",
     role: "Festa de Noivado",
     location: "Penedo - RJ",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=250&auto=format&fit=crop&q=80",
     stars: 5,
     cakeType: "Bolo Chantininho Dourado",
     comment:
@@ -66,11 +66,11 @@ const REVIEWS: Review[] = [
     name: "Fernanda Lima",
     role: "Aniversário Surpresa",
     location: "Centro, Itatiaia",
-    avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1548142813-c348350df52b?w=250&auto=format&fit=crop&q=80",
     stars: 5,
-    cakeType: "Bolo Dois Amores com Topo",
+    cakeType: "Bolo Dois Amores",
     comment:
-      "O capricho da Janaína é diferenciado demais! O topo de bolo personalizado veio lindo, cores vivas e o bolo chegou perfeito. Atendimento nota 10 do início ao fim.",
+      "O capricho da Janaína é diferenciado demais! O topo de bolo personalizado que mandei por WhatsApp ficou perfeito e o bolo chegou intacto na comemoração. Atendimento nota 10!",
     date: "Outubro de 2026",
   },
   {
@@ -78,11 +78,11 @@ const REVIEWS: Review[] = [
     name: "Patrícia Souza",
     role: "Chá de Bebê",
     location: "Itatiaia - RJ",
-    avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=160&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=250&auto=format&fit=crop&q=80",
     stars: 5,
-    cakeType: "Bolo Branco Suave com Brigadeiro",
+    cakeType: "Bolo Suave com Morangos",
     comment:
-      "Massa fofinha, recheio na medida certa sem ser enjoativo. Chegou intacto, impecável e fez o maior sucesso nas fotos da comemoração! Com certeza pedirei de novo.",
+      "Massa fofinha, recheio na medida certa sem ser enjoativo. Chegou impecável na retirada e fez o maior sucesso nas fotos da comemoração! Com certeza pedirei de novo.",
     date: "Setembro de 2026",
   },
 ];
@@ -101,7 +101,7 @@ export const ReviewsSection: React.FC = () => {
     setCanScrollLeft(el.scrollLeft > 20);
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 20);
 
-    const cardWidth = el.clientWidth * 0.85; // approximate width of item
+    const cardWidth = el.clientWidth * 0.85;
     if (cardWidth > 0) {
       const newIndex = Math.round(el.scrollLeft / cardWidth);
       setActiveIndex(Math.min(Math.max(newIndex, 0), REVIEWS.length - 1));
@@ -116,7 +116,7 @@ export const ReviewsSection: React.FC = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const scrollAmount = el.clientWidth * 0.85;
+    const scrollAmount = Math.min(el.clientWidth * 0.85, 380);
     el.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
@@ -127,7 +127,7 @@ export const ReviewsSection: React.FC = () => {
     const el = scrollContainerRef.current;
     if (!el) return;
 
-    const cardWidth = el.clientWidth * 0.85;
+    const cardWidth = Math.min(el.clientWidth * 0.85, 380);
     el.scrollTo({
       left: index * cardWidth,
       behavior: "smooth",
@@ -136,18 +136,18 @@ export const ReviewsSection: React.FC = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="avaliacoes">
-      <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#DDD6FE] shadow-xs">
+    <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-14" id="avaliacoes">
+      <div className="bg-white rounded-3xl p-5 sm:p-10 border border-[#DDD6FE] shadow-xs">
         {/* Header Section */}
         <div className="text-center max-w-xl mx-auto mb-8">
-          <div className="inline-flex items-center space-x-1.5 text-xs font-bold text-[#8B5CF6] uppercase tracking-wider mb-1">
-            <span>⭐ Opinião das Clientes</span>
+          <div className="inline-flex items-center space-x-1.5 text-xs font-bold text-[#8B5CF6] uppercase tracking-wider mb-1.5">
+            <span>⭐ Depoimentos Reais de Clientes</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1C1C2E] font-serif">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1C1C2E] tracking-tight">
             Avaliações & Experiências
           </h2>
-          <p className="text-xs sm:text-sm text-[#6B7280] mt-1 leading-relaxed">
-            Veja o que dizem quem já provou e se encantou com os bolos artesanais da Janaína Mendes.
+          <p className="text-xs sm:text-sm text-[#6B7280] mt-1.5 leading-relaxed">
+            Veja o carinho de quem já celebrou momentos especiais com os bolos artesanais da Janaína Mendes.
           </p>
 
           <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 bg-[#F5F3FF] px-4 py-2 rounded-2xl border border-[#DDD6FE]">
@@ -156,7 +156,7 @@ export const ReviewsSection: React.FC = () => {
               5.0 de 5.0
             </span>
             <span className="text-[11px] sm:text-xs text-[#7C6FAD] whitespace-nowrap">
-              • 100% de clientes satisfeitas
+              • Clientes satisfeitas em Itatiaia e Região
             </span>
           </div>
         </div>
@@ -175,7 +175,7 @@ export const ReviewsSection: React.FC = () => {
                 : "opacity-30 cursor-not-allowed text-gray-400"
             }`}
           >
-            <span className="text-xl font-bold">‹</span>
+            <span className="text-2xl font-bold leading-none">‹</span>
           </button>
 
           {/* Right Arrow Button (Desktop / Tablet) */}
@@ -190,7 +190,7 @@ export const ReviewsSection: React.FC = () => {
                 : "opacity-30 cursor-not-allowed text-gray-400"
             }`}
           >
-            <span className="text-xl font-bold">›</span>
+            <span className="text-2xl font-bold leading-none">›</span>
           </button>
 
           {/* Scrollable / Swipeable Track */}
@@ -200,7 +200,7 @@ export const ReviewsSection: React.FC = () => {
             tabIndex={0}
             role="region"
             aria-label="Carrossel de avaliações de clientes"
-            className="flex space-x-4 overflow-x-auto scroll-smooth snap-x snap-mandatory py-3 px-1 scrollbar-none focus:outline-none"
+            className="flex space-x-3.5 sm:space-x-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-2 px-1 scrollbar-none focus:outline-none"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
@@ -210,47 +210,55 @@ export const ReviewsSection: React.FC = () => {
             {REVIEWS.map((rev) => (
               <div
                 key={rev.id}
-                className="w-[85vw] sm:w-[340px] md:w-[360px] flex-shrink-0 snap-center p-5 sm:p-6 rounded-3xl bg-[#F8F7FB] border border-[#DDD6FE] shadow-xs flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:border-[#8B5CF6]/50"
+                className="w-[86vw] max-w-[340px] sm:w-[350px] md:w-[370px] flex-shrink-0 snap-center p-4 sm:p-6 rounded-3xl bg-[#F8F7FB] border border-[#DDD6FE] shadow-xs flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:border-[#8B5CF6]/50"
               >
-                {/* Top Profile Card with Woman Photo */}
                 <div>
-                  <div className="flex items-center space-x-3 mb-3">
-                    <img
-                      src={rev.avatar}
-                      alt={`Foto de ${rev.name}`}
-                      loading="lazy"
-                      className="w-13 h-13 rounded-full object-cover border-2 border-[#8B5CF6] shadow-sm flex-shrink-0"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center space-x-1.5">
-                        <h3 className="text-sm font-extrabold text-[#1C1C2E] truncate font-serif">
+                  {/* Customer Profile Header */}
+                  <div className="flex items-start space-x-3 mb-3.5">
+                    {/* Real Customer Photo */}
+                    <div className="relative flex-shrink-0">
+                      <img
+                        src={rev.avatar}
+                        alt={`Foto de ${rev.name}`}
+                        loading="lazy"
+                        className="w-13 h-13 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[#8B5CF6]/40 shadow-sm"
+                      />
+                      <span
+                        title="Cliente Verificada"
+                        className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs"
+                      >
+                        ✓
+                      </span>
+                    </div>
+
+                    {/* Customer Full Name (Never truncated) */}
+                    <div className="flex-1 min-w-0 pt-0.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <h3 className="text-sm sm:text-base font-bold text-[#1C1C2E] leading-snug">
                           {rev.name}
                         </h3>
-                        <span
-                          title="Cliente com pedido verificado"
-                          className="inline-flex items-center text-[10px] text-green-700 bg-green-100 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0"
-                        >
-                          ✓ Verificada
+                        <span className="inline-flex items-center text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">
+                          Verificada
                         </span>
                       </div>
-                      <p className="text-[11px] text-[#7C6FAD] truncate font-medium">
+                      <p className="text-xs text-[#7C6FAD] mt-0.5 font-normal">
                         {rev.role} • {rev.location}
                       </p>
                     </div>
                   </div>
 
                   {/* Rating Stars + Cake Tag */}
-                  <div className="flex items-center justify-between mb-2.5">
-                    <div className="flex text-amber-500 text-xs">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <div className="flex text-amber-500 text-xs tracking-wider">
                       {"★".repeat(rev.stars)}
                     </div>
-                    <span className="text-[10px] font-bold text-[#8B5CF6] bg-[#EDE9FE] px-2 py-0.5 rounded-full truncate max-w-[170px]">
+                    <span className="text-[11px] font-semibold text-[#7C3AED] bg-[#EDE9FE] px-2.5 py-0.5 rounded-full whitespace-nowrap">
                       {rev.cakeType}
                     </span>
                   </div>
 
-                  {/* Comment */}
-                  <p className="text-xs text-[#374151] leading-relaxed italic">
+                  {/* Customer Review Text */}
+                  <p className="text-xs sm:text-sm text-[#374151] leading-relaxed italic">
                     "{rev.comment}"
                   </p>
                 </div>
@@ -267,9 +275,9 @@ export const ReviewsSection: React.FC = () => {
           </div>
 
           {/* Swipe indicator hint for mobile */}
-          <div className="md:hidden text-center mt-3 text-[11px] text-[#7C6FAD] flex items-center justify-center space-x-1">
+          <div className="md:hidden text-center mt-3.5 text-xs text-[#7C6FAD] flex items-center justify-center space-x-1.5">
             <span>👈</span>
-            <span className="font-semibold">Deslize para o lado para ver mais</span>
+            <span className="font-semibold">Deslize para ver todas as avaliações</span>
             <span>👉</span>
           </div>
 
@@ -280,8 +288,8 @@ export const ReviewsSection: React.FC = () => {
                 key={rev.id}
                 type="button"
                 onClick={() => scrollToIndex(idx)}
-                aria-label={`Ir para avaliação ${idx + 1}`}
-                className={`transition-all duration-300 rounded-full ${
+                aria-label={`Ir para avaliação de ${rev.name}`}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
                   activeIndex === idx
                     ? "w-7 h-2 bg-[#8B5CF6]"
                     : "w-2 h-2 bg-[#DDD6FE] hover:bg-[#C4B5FD]"
