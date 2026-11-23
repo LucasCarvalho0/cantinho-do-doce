@@ -214,34 +214,49 @@ export const ReviewsSection: React.FC = () => {
               >
                 <div>
                   {/* Customer Profile Header */}
-                  <div className="flex items-start space-x-3 mb-3.5">
-                    {/* Real Customer Photo */}
-                    <div className="relative flex-shrink-0">
+                  <div className="flex items-center space-x-3 mb-3.5">
+                    {/* Real Customer Photo - Strictly Fixed 52x52 Circle */}
+                    <div
+                      className="relative flex-shrink-0"
+                      style={{ width: "52px", height: "52px", minWidth: "52px", minHeight: "52px", maxWidth: "52px", maxHeight: "52px" }}
+                    >
                       <img
                         src={rev.avatar}
                         alt={`Foto de ${rev.name}`}
                         loading="lazy"
-                        className="w-13 h-13 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[#8B5CF6]/40 shadow-sm"
+                        style={{
+                          width: "52px",
+                          height: "52px",
+                          minWidth: "52px",
+                          minHeight: "52px",
+                          maxWidth: "52px",
+                          maxHeight: "52px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                        className="rounded-full border-2 border-[#8B5CF6]/50 shadow-sm"
                       />
                       <span
                         title="Cliente Verificada"
-                        className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs"
+                        style={{ width: "18px", height: "18px" }}
+                        className="absolute -bottom-0.5 -right-0.5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs"
                       >
                         ✓
                       </span>
                     </div>
 
-                    {/* Customer Full Name (Never truncated) */}
-                    <div className="flex-1 min-w-0 pt-0.5">
-                      <div className="flex items-center justify-between gap-1">
-                        <h3 className="text-sm sm:text-base font-bold text-[#1C1C2E] leading-snug">
+                    {/* Customer Full Name & Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1.5">
+                        <h3 className="text-sm sm:text-base font-bold text-[#1C1C2E] leading-tight">
                           {rev.name}
                         </h3>
                         <span className="inline-flex items-center text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">
                           Verificada
                         </span>
                       </div>
-                      <p className="text-xs text-[#7C6FAD] mt-0.5 font-normal">
+                      <p className="text-xs text-[#7C6FAD] mt-1 font-normal truncate">
                         {rev.role} • {rev.location}
                       </p>
                     </div>

@@ -89,7 +89,7 @@ export const PwaInstallBanner: React.FC<PwaInstallBannerProps> = ({ canInstallPr
         >
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3.5">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white flex items-center justify-center border-2 border-[#DDD6FE] shadow-sm flex-shrink-0 p-1">
+              <div className="w-14 h-14 rounded-2xl bg-white flex items-center justify-center border-2 border-[#DDD6FE] shadow-sm flex-shrink-0 p-1">
                 <img
                   src="/icons/icon-192x192.png"
                   alt="Logo Cantinho Doce"

@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
               <img
                 src="/images/logo-jana01.png"
                 alt="Logo Cantinho Doce"
-                className="w-11 h-11 sm:w-13 sm:h-13 rounded-full p-1 bg-white shadow-md border-2 border-[#8B5CF6]/30 object-contain group-hover:scale-105 transition-transform"
+                className="w-12 h-12 rounded-full p-1 bg-white shadow-md border-2 border-[#8B5CF6]/30 object-contain group-hover:scale-105 transition-transform"
               />
               <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white"></span>
             </div>
