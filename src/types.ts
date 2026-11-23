@@ -35,7 +35,7 @@ export interface CartItem {
 export interface OrderCheckoutData {
   customerName: string;
   customerPhone: string;
-  deliveryType: "retirada" | "entrega";
+  deliveryType?: "retirada" | "entrega";
   address?: string;
   pickupDate: string;
   timePeriod: "manha" | "tarde";

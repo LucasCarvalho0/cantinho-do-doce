@@ -53,11 +53,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose })
       return;
     }
 
-    if (formData.deliveryType === "entrega" && !formData.address?.trim()) {
-      setFormError("Por favor, informe o endereço completo para entrega.");
-      return;
-    }
-
     openCartWhatsApp(cart, formData, subtotal);
     clearCart();
     onClose();
@@ -178,67 +173,31 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose })
               </div>
             </div>
 
-            {/* Delivery Type */}
+            {/* Modalidade de Atendimento: Exclusivo Retirada no Local */}
             <div>
               <label className="block text-xs font-bold text-[#1C1C2E] mb-1.5">
-                Modalidade de Retirada / Entrega *
+                Modalidade de Atendimento *
               </label>
-              <div className="grid grid-cols-2 gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, deliveryType: "retirada" })}
-                  className={`p-3 rounded-2xl border text-xs font-bold transition-all text-left flex items-center space-x-2 ${
-                    formData.deliveryType === "retirada"
-                      ? "border-[#8B5CF6] bg-[#8B5CF6] text-white"
-                      : "border-[#DDD6FE] text-[#4C1D95] bg-white hover:bg-[#F5F3FF]"
-                  }`}
-                >
-                  <span>📍</span>
-                  <div>
-                    <span>Retirada no Local</span>
-                    <span className="block text-[10px] font-normal opacity-80">
-                      Cidade Jardim Itatiaia
+              <div className="p-3.5 sm:p-4 rounded-2xl border-2 border-[#8B5CF6] bg-[#F5F3FF] flex items-start space-x-3 shadow-xs">
+                <span className="text-xl sm:text-2xl flex-shrink-0">📍</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs sm:text-sm font-extrabold text-[#1C1C2E]">
+                      Retirada no Local (Exclusiva)
+                    </span>
+                    <span className="text-[10px] font-bold text-[#8B5CF6] bg-white px-2 py-0.5 rounded-full border border-[#DDD6FE]">
+                      Cidade Jardim
                     </span>
                   </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, deliveryType: "entrega" })}
-                  className={`p-3 rounded-2xl border text-xs font-bold transition-all text-left flex items-center space-x-2 ${
-                    formData.deliveryType === "entrega"
-                      ? "border-[#8B5CF6] bg-[#8B5CF6] text-white"
-                      : "border-[#DDD6FE] text-[#4C1D95] bg-white hover:bg-[#F5F3FF]"
-                  }`}
-                >
-                  <span>🚗</span>
-                  <div>
-                    <span>Entrega a Domicílio</span>
-                    <span className="block text-[10px] font-normal opacity-80">
-                      Sob consulta de taxa
-                    </span>
-                  </div>
-                </button>
+                  <p className="text-xs text-[#5B21B6] font-medium mt-0.5">
+                    Rua Quatorze, 34 — Cidade Jardim Itatiaia, Itatiaia - RJ
+                  </p>
+                  <p className="text-[11px] text-[#7C6FAD] mt-1.5 leading-relaxed">
+                    ⚠️ <em>Trabalhamos exclusivamente com retirada no local para garantir o frescor, a estrutura e a decoração perfeita do seu bolo. Não realizamos entregas.</em>
+                  </p>
+                </div>
               </div>
             </div>
-
-            {formData.deliveryType === "entrega" && (
-              <div>
-                <label className="block text-xs font-bold text-[#1C1C2E] mb-1">
-                  Endereço Completo de Entrega (Rua, Número, Bairro, Cidade) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.address || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, address: e.target.value })
-                  }
-                  placeholder="Ex: Rua das Flores, 120 - Itatiaia"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD6FE] text-xs outline-none focus:border-[#8B5CF6]"
-                />
-              </div>
-            )}
 
             {/* Date and Time Period */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

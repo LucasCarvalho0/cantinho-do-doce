@@ -46,7 +46,7 @@ const REVIEWS: Review[] = [
     stars: 5,
     cakeType: "Bolo Red Velvet Especial",
     comment:
-      "Excelente atendimento pelo WhatsApp, entrega super pontual e acabamento profissional digno de confeitaria de luxo. O Cantinho Doce agora é o nosso ponto oficial de encomendas para toda a família!",
+      "Excelente atendimento pelo WhatsApp, retirada super pontual e organizada, e acabamento profissional digno de confeitaria de luxo. O Cantinho Doce agora é o nosso ponto oficial de encomendas para toda a família!",
     date: "Outubro de 2026",
   },
   {

@@ -70,7 +70,7 @@ test("Database Schema & Order Status Transitions", () => {
   // Transition to Pronto para retirada
   db.prepare("UPDATE orders SET status = ? WHERE id = ?").run("Pronto para retirada", orderId);
   db.prepare("INSERT INTO order_history (order_id, previous_status, new_status, note) VALUES (?, ?, ?, ?)")
-    .run(orderId, "Em produção", "Pronto para retirada", "Embalado e pronto para entrega");
+    .run(orderId, "Em produção", "Pronto para retirada", "Embalado e pronto para retirada");
 
   // Verify status & history count
   const updatedOrder = db.prepare("SELECT * FROM orders WHERE id = ?").get(orderId);

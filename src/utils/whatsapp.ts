@@ -85,18 +85,11 @@ export const generateCartWhatsAppMessage = (
   message += `──────────────────────\n`;
   message += `💰 *VALOR TOTAL ESTIMADO:* *${formatCurrency(total)}*\n\n`;
 
-  message += `📋 *DADOS PARA RETIRADA / ENTREGA:*\n`;
+  message += `📋 *DADOS PARA RETIRADA:*\n`;
   message += `• *Cliente:* ${checkout.customerName}\n`;
   message += `• *WhatsApp:* ${checkout.customerPhone}\n`;
-  message += `• *Modalidade:* ${
-    checkout.deliveryType === "entrega" ? "🚗 Entrega a Domicílio" : "📍 Retirada no Cantinho Doce"
-  }\n`;
-
-  if (checkout.deliveryType === "entrega" && checkout.address) {
-    message += `• *Endereço de Entrega:* ${checkout.address}\n`;
-  } else {
-    message += `• *Local de Retirada:* Rua Quatorze, 34 - Cidade Jardim Itatiaia, Itatiaia - RJ\n`;
-  }
+  message += `• *Modalidade:* 📍 Retirada no Local (Cidade Jardim Itatiaia)\n`;
+  message += `• *Local de Retirada:* Rua Quatorze, 34 - Cidade Jardim Itatiaia, Itatiaia - RJ\n`;
 
   const formattedDate = new Date(checkout.pickupDate + "T12:00:00").toLocaleDateString("pt-BR", {
     weekday: "long",
