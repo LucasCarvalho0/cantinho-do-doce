@@ -231,7 +231,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             {/* Contador de Porcentagem até 100% */}
             <div
               className="flex items-baseline justify-center mb-4"
-              style={{ fontFamily: "'Space Grotesk', -apple-system, sans-serif" }}
+              style={{ fontFamily: "'Roboto', -apple-system, sans-serif" }}
             >
               <span
                 className={`text-6xl sm:text-7xl font-extrabold tracking-tighter tabular-nums min-w-[130px] text-right transition-all duration-150 ${
@@ -251,7 +251,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             <div className="w-full max-w-[280px] sm:max-w-[320px] flex flex-col gap-2.5">
               <div
                 className="flex justify-between items-center text-[10px] sm:text-[11px] font-bold tracking-widest uppercase"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                style={{ fontFamily: "'Roboto', -apple-system, sans-serif" }}
               >
                 <span className="text-[#8E8AAB]">CANTINHO DOCE</span>
                 <span
