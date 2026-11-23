@@ -54,6 +54,7 @@ export const AppContent: React.FC = () => {
     pickupDate: string;
     whatsappMessage: string;
     isChristmas: boolean;
+    hasTopper?: boolean;
     topperImagePreview?: string;
     topperImageName?: string;
   } | null>(null);
@@ -280,8 +281,7 @@ export const AppContent: React.FC = () => {
           whatsappMessage={submittedOrder.whatsappMessage}
           whatsappNumber={WHATSAPP_NUMBER}
           isChristmas={submittedOrder.isChristmas}
-          topperImagePreview={submittedOrder.topperImagePreview}
-          topperImageName={submittedOrder.topperImageName}
+          hasTopper={submittedOrder.hasTopper}
           onClose={() => setSubmittedOrder(null)}
         />
       )}

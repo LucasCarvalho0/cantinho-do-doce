@@ -178,18 +178,9 @@ export const api = {
     const fallbackCode = `CD-2027-${Math.floor(1000 + Math.random() * 9000)}`;
 
     try {
-      // Avoid sending massive base64 image strings over fetch to avoid 413 Payload Too Large
       const payload = {
         ...order,
         subtotal: baseSubtotal,
-        customer: {
-          ...order.customer,
-          // Only send a lightweight placeholder preview over the network if it's too large
-          topperImagePreview:
-            order.customer?.topperImagePreview && order.customer.topperImagePreview.length > 300000
-              ? order.customer.topperImagePreview.slice(0, 300000)
-              : order.customer?.topperImagePreview,
-        },
       };
 
       const res = await request<{

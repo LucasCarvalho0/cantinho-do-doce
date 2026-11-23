@@ -32,6 +32,7 @@ interface OrderModalProps {
     pickupDate: string;
     whatsappMessage: string;
     isChristmas: boolean;
+    hasTopper?: boolean;
     topperImagePreview?: string;
     topperImageName?: string;
   }) => void;
@@ -50,7 +51,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [topperFileError, setTopperFileError] = useState<string | null>(null);
 
   const totalSteps = 6;
 
@@ -75,48 +75,6 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
   const handleSelectDough = (dough: "Branca" | "Chocolate") => {
     onOrderChange({ ...order, dough });
-  };
-
-  const handleTopperFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setTopperFileError(null);
-    if (!file) return;
-
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      setTopperFileError("Formato inválido. Selecione uma imagem JPG, PNG ou WEBP.");
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      setTopperFileError("Imagem muito pesada. O tamanho máximo permitido é 5MB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      onOrderChange({
-        ...order,
-        customer: {
-          ...order.customer,
-          topperImageName: file.name,
-          topperImagePreview: event.target?.result as string,
-        },
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleRemoveTopperImage = () => {
-    setTopperFileError(null);
-    onOrderChange({
-      ...order,
-      customer: {
-        ...order.customer,
-        topperImageName: undefined,
-        topperImagePreview: undefined,
-      },
-    });
   };
 
   const handleSelectFilling = (filling: string) => {
@@ -197,8 +155,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         pickupDate: order.customer.pickupDate,
         whatsappMessage: message,
         isChristmas: order.isChristmasOrder,
-        topperImagePreview: order.customer.topperImagePreview,
-        topperImageName: order.customer.topperImageName,
+        hasTopper: order.customer.hasTopper === "sim",
       });
     } catch (err: any) {
       console.warn("API request error, proceeding with instant WhatsApp flow:", err);
@@ -213,8 +170,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
         pickupDate: order.customer.pickupDate,
         whatsappMessage: message,
         isChristmas: order.isChristmasOrder,
-        topperImagePreview: order.customer.topperImagePreview,
-        topperImageName: order.customer.topperImageName,
+        hasTopper: order.customer.hasTopper === "sim",
       });
     } finally {
       setIsSubmitting(false);
@@ -687,7 +643,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
               </div>
 
-              {/* UPLOAD & PERSONALIZAÇÃO DO TOPO DE BOLO QUANDO ESCOLHE "SIM" */}
+              {/* INFORMAÇÕES DO TOPO DE BOLO QUANDO ESCOLHE "SIM" */}
               {order.customer.hasTopper === "sim" && (
                 <div className="bg-[#F5F3FF] p-3.5 sm:p-4 rounded-2xl border border-[#DDD6FE] space-y-3 animate-fade-in-up">
                   <div className="flex items-center space-x-2 text-xs font-bold text-[#8B5CF6]">
@@ -697,7 +653,7 @@ export const OrderModal: React.FC<OrderModalProps> = ({
 
                   <div>
                     <label className="block text-[11px] font-bold text-[#1C1C2E] mb-1">
-                      Detalhes do Topo (Nome, Idade ou Frase):
+                      Detalhes do Topo (Nome, Idade, Frase ou Cores):
                     </label>
                     <input
                       type="text"
@@ -716,69 +672,17 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#1C1C2E] mb-1">
-                      Foto / Modelo de Inspiração do Topo:
-                    </label>
-
-                    {!order.customer.topperImagePreview ? (
-                      <label className="flex flex-col items-center justify-center p-3.5 rounded-xl border-2 border-dashed border-[#DDD6FE] hover:border-[#8B5CF6] bg-white cursor-pointer transition-colors text-center">
-                        <span className="text-2xl mb-1">📸</span>
-                        <span className="text-xs font-bold text-[#8B5CF6]">
-                          Clique para anexar foto do topo desejado
-                        </span>
-                        <span className="text-[10px] text-[#9CA3AF] mt-0.5">
-                          Envie um print ou foto (JPG, PNG ou WEBP até 5MB)
-                        </span>
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          onChange={handleTopperFileChange}
-                          className="hidden"
-                        />
-                      </label>
-                    ) : (
-                      <div className="flex items-center justify-between p-2.5 rounded-xl border border-[#DDD6FE] bg-white">
-                        <div className="flex items-center space-x-2.5 min-w-0">
-                          <img
-                            src={order.customer.topperImagePreview}
-                            alt="Prévia do Topo"
-                            className="w-12 h-12 rounded-lg object-cover border border-[#DDD6FE] flex-shrink-0"
-                          />
-                          <div className="min-w-0">
-                            <p className="text-xs font-bold text-[#1C1C2E] truncate">
-                              {order.customer.topperImageName || "Imagem do Topo"}
-                            </p>
-                            <p className="text-[10px] text-emerald-600 font-semibold">
-                              ✓ Foto anexada com sucesso
-                            </p>
-                            <label className="text-[11px] text-[#8B5CF6] font-bold hover:underline cursor-pointer">
-                              Substituir foto
-                              <input
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp"
-                                onChange={handleTopperFileChange}
-                                className="hidden"
-                              />
-                            </label>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={handleRemoveTopperImage}
-                          className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 text-xs ml-2 flex-shrink-0"
-                          title="Remover foto"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    )}
-
-                    {topperFileError && (
-                      <p className="text-xs text-red-600 font-bold mt-1 bg-red-50 p-1.5 rounded-lg border border-red-200">
-                        {topperFileError}
+                  {/* Aviso informativo de envio da imagem diretamente no WhatsApp */}
+                  <div className="bg-[#EDE9FE]/80 p-3 sm:p-3.5 rounded-xl border border-[#C4B5FD] flex items-start space-x-2.5">
+                    <span className="text-xl flex-shrink-0 mt-0.5">📸</span>
+                    <div className="text-xs text-[#5B21B6] leading-relaxed">
+                      <strong className="block font-bold text-[#4C1D95] mb-0.5">
+                        Envio da Foto de Inspiração do Topo:
+                      </strong>
+                      <p className="text-[#6D28D9]">
+                        Não precisa anexar nenhuma foto aqui pelo site! Ao finalizar seu pedido e abrir o WhatsApp, <strong>basta enviar a imagem ou print de inspiração diretamente na conversa com a Janaína</strong> para que ela faça o topo exatamente como você sonhou.
                       </p>
-                    )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -850,20 +754,9 @@ export const OrderModal: React.FC<OrderModalProps> = ({
                           {order.customer.topperNotes}
                         </span>
                       )}
-                      {order.customer.topperImageName && (
-                        <div className="flex items-center justify-end space-x-1.5 mt-1">
-                          {order.customer.topperImagePreview && (
-                            <img
-                              src={order.customer.topperImagePreview}
-                              alt="Topo"
-                              className="w-7 h-7 rounded-md object-cover border border-[#DDD6FE]"
-                            />
-                          )}
-                          <span className="text-[11px] text-emerald-600 font-semibold truncate max-w-[150px]">
-                            📸 {order.customer.topperImageName}
-                          </span>
-                        </div>
-                      )}
+                      <span className="text-[11px] text-[#7C6FAD] block mt-0.5">
+                        📸 Foto será enviada na conversa do WhatsApp
+                      </span>
                     </div>
                   </div>
                 )}

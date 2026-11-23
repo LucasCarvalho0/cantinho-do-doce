@@ -130,17 +130,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToCheckout }) =
                       </div>
                     </div>
 
-                    {/* Reference & Topper Previews */}
-                    {item.customization.topperImagePreview && (
+                    {/* Topper Note */}
+                    {item.customization.hasTopper && (
                       <div className="flex items-center space-x-2 bg-[#F5F3FF] p-2 rounded-xl border border-[#C4B5FD]/40">
-                        <img
-                          src={item.customization.topperImagePreview}
-                          alt="Foto do topo"
-                          className="w-10 h-10 rounded-lg object-cover"
-                        />
+                        <span className="text-base">🎂</span>
                         <div className="text-[10px] text-[#4C1D95]">
-                          <span className="font-bold text-[#5B21B6] block">Foto do Topo Anexada</span>
-                          <span>Envie também na conversa do WhatsApp</span>
+                          <span className="font-bold text-[#5B21B6] block">Com Topo de Bolo Personalizado</span>
+                          <span>Envie a foto/print de inspiração no WhatsApp da Janaína</span>
                         </div>
                       </div>
                     )}

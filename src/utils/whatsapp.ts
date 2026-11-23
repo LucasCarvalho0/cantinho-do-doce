@@ -58,10 +58,11 @@ export const generateCartWhatsAppMessage = (
 
     if (item.customization.hasTopper) {
       hasReferenceImage = true;
-      message += `• *Topo de Bolo:* Sim (Foto de referência enviada pelo cliente nesta conversa) 📸\n`;
+      message += `• *Topo de Bolo:* Sim (Personalizado) 🎂\n`;
       if (item.customization.topperNotes) {
-        message += `  ↳ *Detalhes do Topo:* ${item.customization.topperNotes}\n`;
+        message += `  ↳ *Detalhes:* ${item.customization.topperNotes}\n`;
       }
+      message += `  ↳ 📸 *Foto do Topo:* O cliente enviará a imagem/print de inspiração a seguir aqui no WhatsApp!\n`;
     } else if (item.customization.hasTopper === false) {
       message += `• *Topo de Bolo:* Não (Sem topo de bolo)\n`;
     }
@@ -176,13 +177,11 @@ export const generateWhatsAppMessage = (
   if (order?.customer?.hasTopper === "sim") {
     msg += `• *Topo de Bolo Personalizado:* Sim 🎂\n`;
     if (order.customer.topperNotes) {
-      msg += `  ↳ *Detalhes do Topo:* ${order.customer.topperNotes}\n`;
+      msg += `  ↳ *Detalhes:* ${order.customer.topperNotes}\n`;
     }
-    if (order.customer.topperImageName) {
-      msg += `  ↳ *Foto de Inspiração do Topo:* ${order.customer.topperImageName} (enviando em anexo nesta conversa) 📸\n`;
-    } else {
-      msg += `  ↳ *Foto de Inspiração do Topo:* (enviando foto de referência em anexo) 📸\n`;
-    }
+    msg += `  ↳ 📸 *Foto de Inspiração:* Enviarei a imagem/print de inspiração a seguir aqui nesta conversa!\n`;
+  } else if (order?.customer?.hasTopper === "não") {
+    msg += `• *Topo de Bolo Personalizado:* Não\n`;
   }
   if (order?.customer?.themeDescription) {
     msg += `• *Tema / Cores do Evento:* ${order.customer.themeDescription}\n`;

@@ -11,6 +11,7 @@ interface OrderSuccessModalProps {
   whatsappMessage: string;
   whatsappNumber?: string;
   isChristmas?: boolean;
+  hasTopper?: boolean;
   topperImagePreview?: string;
   topperImageName?: string;
   onClose: () => void;
@@ -25,35 +26,12 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
   whatsappMessage,
   whatsappNumber,
   isChristmas,
-  topperImagePreview,
-  topperImageName,
+  hasTopper,
   onClose,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleSendWhatsApp = async () => {
-    // If Web Share API supports file sharing on mobile, attempt sharing file + text directly to WhatsApp
-    if (topperImagePreview && navigator.share) {
-      try {
-        const response = await fetch(topperImagePreview);
-        const blob = await response.blob();
-        const file = new File([blob], topperImageName || "modelo_topo_bolo.jpg", {
-          type: blob.type || "image/jpeg",
-        });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: `Encomenda Cantinho Doce #${orderCode}`,
-            text: whatsappMessage,
-          });
-          return;
-        }
-      } catch (err) {
-        console.log("Web Share fallback:", err);
-      }
-    }
-
+  const handleSendWhatsApp = () => {
     openWhatsApp(whatsappMessage, whatsappNumber);
   };
 
@@ -133,26 +111,17 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           ) : null}
         </div>
 
-        {/* Foto do Topo Anexada pelo Cliente */}
-        {topperImagePreview && (
-          <div className="bg-[#FAF5FF] border-2 border-[#8B5CF6]/40 rounded-2xl p-3.5 mb-5 shadow-xs">
-            <div className="flex items-center space-x-3.5">
-              <img
-                src={topperImagePreview}
-                alt="Foto do Topo de Bolo"
-                className="w-16 h-16 rounded-xl object-cover border-2 border-[#DDD6FE] shadow-sm flex-shrink-0"
-              />
-              <div className="min-w-0 flex-1">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#7C3AED] bg-[#EDE9FE] px-2.5 py-0.5 rounded-full">
-                  Foto do Topo Anexada 🎂
-                </span>
-                <p className="text-xs font-bold text-[#1C1C2E] truncate mt-1">
-                  {topperImageName || "Modelo do Topo de Bolo"}
-                </p>
-                <p className="text-[11px] text-[#5B21B6] mt-1 leading-snug">
-                  Ao abrir a conversa no WhatsApp da Janaína, confirme o envio desta foto para ela confeccionar o modelo idêntico!
-                </p>
-              </div>
+        {/* Lembrete de Envio do Topo pelo WhatsApp */}
+        {hasTopper && (
+          <div className="bg-[#FAF5FF] border border-[#DDD6FE] rounded-2xl p-3.5 mb-5 shadow-xs flex items-start space-x-3">
+            <span className="text-2xl flex-shrink-0">📸</span>
+            <div className="text-xs text-[#5B21B6] leading-relaxed">
+              <strong className="block font-bold text-[#4C1D95] mb-0.5">
+                Lembrete do Topo de Bolo Personalizado:
+              </strong>
+              <p className="text-[#6D28D9]">
+                Como você solicitou topo de bolo, após abrir o WhatsApp da Janaína, <strong>envie a foto ou print do modelo desejado</strong> diretamente na conversa para ela preparar o modelo idêntico!
+              </p>
             </div>
           </div>
         )}

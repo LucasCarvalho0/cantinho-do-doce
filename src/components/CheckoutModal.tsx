@@ -31,7 +31,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose })
   if (!isOpen) return null;
 
   const hasReferenceImage = cart.some(
-    (item) => item.customization.referenceImagePreview || item.customization.topperImagePreview
+    (item) => item.customization.referenceImagePreview || item.customization.hasTopper
   );
 
   const handleSubmit = (e: React.FormEvent) => {

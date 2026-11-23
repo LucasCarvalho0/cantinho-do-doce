@@ -32,12 +32,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [referenceImageName, setReferenceImageName] = useState<string | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
 
-  // Topo de Bolo (Section 8 of Master Prompt)
+  // Topo de Bolo
   const [hasTopper, setHasTopper] = useState<boolean>(false);
   const [topperNotes, setTopperNotes] = useState("");
-  const [topperImagePreview, setTopperImagePreview] = useState<string | null>(null);
-  const [topperImageName, setTopperImageName] = useState<string | null>(null);
-  const [topperError, setTopperError] = useState<string | null>(null);
 
   const [desiredDate, setDesiredDate] = useState("");
   const [notes, setNotes] = useState("");
@@ -88,34 +85,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     setImageError(null);
   };
 
-  // Topo de Bolo file handler
-  const handleTopperFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setTopperError(null);
-    if (!file) return;
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      setTopperError("Formato inválido. Selecione uma imagem JPG, PNG ou WEBP.");
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      setTopperError("Imagem muito pesada. O tamanho máximo permitido é 5MB.");
-      return;
-    }
-    setTopperImageName(file.name);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setTopperImagePreview(event.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleRemoveTopperImage = () => {
-    setTopperImagePreview(null);
-    setTopperImageName(null);
-    setTopperError(null);
-  };
-
   const unitPrice = useMemo(() => {
     const base = selectedSize.price;
     const optionalsSum = selectedOptionals.reduce((acc, opt) => acc + opt.price, 0);
@@ -125,12 +94,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const totalPrice = unitPrice * quantity;
 
   const handleAddToCart = () => {
-    // Validate required topper photo if topper is selected
-    if (hasTopper && !topperImagePreview) {
-      setTopperError("Por favor, selecione uma foto de referência para o topo de bolo antes de continuar.");
-      return;
-    }
-
     const customization: CartItemCustomization = {
       size: selectedSize,
       optionals: selectedOptionals,
@@ -140,8 +103,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
     if (hasTopper) {
       customization.topperNotes = topperNotes.trim() || undefined;
-      customization.topperImagePreview = topperImagePreview || undefined;
-      customization.topperImageName = topperImageName || "topo-referencia.jpg";
     }
 
     if (product.category === "bolos-aniversario") {
@@ -430,10 +391,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    setHasTopper(false);
-                    setTopperError(null);
-                  }}
+                  onClick={() => setHasTopper(false)}
                   className={`p-3 rounded-2xl border text-xs font-bold transition-all text-center ${
                     !hasTopper
                       ? "border-[#1C1C2E] bg-[#1C1C2E] text-white shadow-xs"
@@ -456,74 +414,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </button>
               </div>
 
-              {/* Conditional Topper File Upload & Notes (Shown only when SIM is selected) */}
+              {/* Informações e Detalhes do Topo (Apenas quando escolhe SIM) */}
               {hasTopper && (
                 <div className="pt-3 border-t border-[#DDD6FE] space-y-3 animate-fade-in-up">
-                  <div>
-                    <label className="block text-xs font-bold text-[#1C1C2E] mb-1">
-                      📸 Foto de Referência do Topo Desejado * <span className="text-[#8B5CF6]">(Obrigatória)</span>
-                    </label>
-                    <p className="text-[11px] text-[#6B7280] mb-2 leading-relaxed">
-                      Selecione uma foto da sua galeria ou câmera para que a Janaína prepare o topo exatamente como você sonhou.
-                    </p>
-
-                    {!topperImagePreview ? (
-                      <label className="flex flex-col items-center justify-center p-5 border-2 border-dashed border-[#8B5CF6] hover:bg-[#EDE9FE]/40 rounded-2xl cursor-pointer bg-white transition-colors">
-                        <span className="text-2xl mb-1">📷</span>
-                        <span className="text-xs font-bold text-[#5B21B6]">Clique para anexar a foto do topo</span>
-                        <span className="text-[10px] text-[#9CA3AF]">Galeria ou Câmera (JPG, PNG ou WEBP até 5MB)</span>
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          onChange={handleTopperFileChange}
-                          className="hidden"
-                        />
-                      </label>
-                    ) : (
-                      <div className="relative bg-white p-3 rounded-2xl border border-[#8B5CF6] flex items-center space-x-3 shadow-xs">
-                        <img
-                          src={topperImagePreview}
-                          alt="Prévia do topo de bolo"
-                          className="w-16 h-16 rounded-xl object-cover border border-[#DDD6FE]"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-[#1C1C2E] truncate">
-                            {topperImageName || "Imagem do topo"}
-                          </p>
-                          <p className="text-[10px] text-green-700 font-semibold">
-                            ✓ Foto anexada com sucesso
-                          </p>
-                          <label className="text-[11px] font-bold text-[#8B5CF6] hover:underline cursor-pointer inline-block mt-0.5">
-                            Substituir foto
-                            <input
-                              type="file"
-                              accept="image/jpeg,image/png,image/webp"
-                              onChange={handleTopperFileChange}
-                              className="hidden"
-                            />
-                          </label>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={handleRemoveTopperImage}
-                          className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100"
-                          title="Remover foto do topo"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    )}
-
-                    {topperError && (
-                      <p className="text-xs text-red-600 font-bold mt-1.5 bg-red-50 p-2 rounded-xl border border-red-200">
-                        {topperError}
+                  {/* Banner explicativo de envio pelo WhatsApp */}
+                  <div className="bg-[#EDE9FE]/80 p-3.5 rounded-2xl border border-[#C4B5FD] flex items-start space-x-2.5">
+                    <span className="text-xl flex-shrink-0 mt-0.5">📸</span>
+                    <div className="text-xs text-[#5B21B6] leading-relaxed">
+                      <strong className="block font-bold text-[#4C1D95] mb-0.5">
+                        Envio da Imagem de Referência do Topo:
+                      </strong>
+                      <p className="text-[#6D28D9]">
+                        Não precisa anexar foto aqui pelo site! Ao finalizar e enviar seu pedido pelo WhatsApp, <strong>basta enviar a imagem ou print de inspiração diretamente na conversa com a Janaína</strong> para que ela prepare o modelo idêntico.
                       </p>
-                    )}
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-[#1C1C2E] mb-1">
-                      Observações sobre o Topo de Bolo
+                      Observações sobre o Topo de Bolo (Nome, Idade, Tema ou Cores)
                     </label>
                     <input
                       type="text"
