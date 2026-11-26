@@ -228,49 +228,102 @@ export const ReviewsSection: React.FC = () => {
               >
                 <div>
                   {/* Customer Profile Header */}
-                  <div className="flex items-center space-x-3 mb-3.5">
-                    {/* Real Customer Photo - Strictly Fixed 52x52 Circle */}
+                  <div className="flex items-start gap-3 mb-3.5">
+                    {/* Real Customer Photo — forced 52×52 circle, never grows */}
                     <div
-                      className="relative flex-shrink-0"
-                      style={{ width: "52px", height: "52px", minWidth: "52px", minHeight: "52px", maxWidth: "52px", maxHeight: "52px" }}
+                      className="relative flex-none"
+                      style={{
+                        width: "52px",
+                        height: "52px",
+                        minWidth: "52px",
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        border: "2px solid rgba(139,92,246,0.5)",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
+                      }}
                     >
                       <img
                         src={rev.avatar}
                         alt={`Foto de ${rev.name}`}
                         loading="lazy"
                         style={{
-                          width: "52px",
-                          height: "52px",
-                          minWidth: "52px",
-                          minHeight: "52px",
-                          maxWidth: "52px",
-                          maxHeight: "52px",
-                          borderRadius: "50%",
+                          width: "100%",
+                          height: "100%",
                           objectFit: "cover",
+                          objectPosition: "center top",
                           display: "block",
                         }}
-                        className="rounded-full border-2 border-[#8B5CF6]/50 shadow-sm"
                       />
                       <span
                         title="Cliente Verificada"
-                        style={{ width: "18px", height: "18px" }}
-                        className="absolute -bottom-0.5 -right-0.5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs"
+                        style={{
+                          position: "absolute",
+                          bottom: "-2px",
+                          right: "-2px",
+                          width: "18px",
+                          height: "18px",
+                          borderRadius: "50%",
+                          background: "#10b981",
+                          color: "#fff",
+                          fontSize: "10px",
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "2px solid #fff",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+                        }}
                       >
                         ✓
                       </span>
                     </div>
 
-                    {/* Customer Full Name & Details */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1.5 flex-wrap">
-                        <h3 className="text-sm sm:text-base font-bold text-[#1C1C2E] leading-tight">
+                    {/* Customer Full Name & Details — min-w-0 prevents text overflow */}
+                    <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", flexWrap: "wrap" }}>
+                        <h3
+                          style={{
+                            fontSize: "0.875rem",
+                            fontWeight: 700,
+                            color: "#1C1C2E",
+                            lineHeight: 1.3,
+                            margin: 0,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
                           {rev.name}
                         </h3>
-                        <span className="inline-flex items-center text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-semibold whitespace-nowrap">
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            fontSize: "10px",
+                            color: "#065f46",
+                            background: "#ecfdf5",
+                            border: "1px solid rgba(167,243,208,0.8)",
+                            padding: "2px 8px",
+                            borderRadius: "9999px",
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
+                            flexShrink: 0,
+                          }}
+                        >
                           Verificada
                         </span>
                       </div>
-                      <p className="text-xs text-[#7C6FAD] mt-1 font-normal">
+                      <p
+                        style={{
+                          fontSize: "0.75rem",
+                          color: "#7C6FAD",
+                          margin: "4px 0 0",
+                          fontWeight: 400,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
                         {rev.role} • {rev.location}
                       </p>
                     </div>
